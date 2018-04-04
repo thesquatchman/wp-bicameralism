@@ -24469,6 +24469,14 @@ var _logo2 = _interopRequireDefault(_logo);
 
 __webpack_require__(76);
 
+var _Posts = __webpack_require__(78);
+
+var _Posts2 = _interopRequireDefault(_Posts);
+
+var _Products = __webpack_require__(79);
+
+var _Products2 = _interopRequireDefault(_Products);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24477,28 +24485,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Posts = function Posts() {
-  return _react2.default.createElement(
-    'div',
-    null,
-    _react2.default.createElement(
-      'h3',
-      null,
-      'posts'
-    )
-  );
-};
-var Products = function Products() {
-  return _react2.default.createElement(
-    'div',
-    null,
-    _react2.default.createElement(
-      'h3',
-      null,
-      'products'
-    )
-  );
-};
 var Post = function Post() {
   return _react2.default.createElement(
     'div',
@@ -24518,6 +24504,28 @@ var Page = function Page() {
       'h3',
       null,
       'page'
+    )
+  );
+};
+var Cart = function Cart() {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      'h3',
+      null,
+      'cart'
+    )
+  );
+};
+var Checkout = function Checkout() {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      'h3',
+      null,
+      'Checkout'
     )
   );
 };
@@ -24592,6 +24600,15 @@ var App = function (_Component) {
               null,
               _react2.default.createElement(
                 _reactRouterDom.Link,
+                { to: BicameralismSettings.path + 'cart' },
+                'cart'
+              )
+            ),
+            _react2.default.createElement(
+              'li',
+              null,
+              _react2.default.createElement(
+                _reactRouterDom.Link,
                 { to: BicameralismSettings.path + 'sample-page' },
                 'test'
               )
@@ -24604,8 +24621,10 @@ var App = function (_Component) {
           _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path, component: Home }),
           ' // the root path',
           _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'posts/:slug', component: Post }),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'posts', component: Posts }),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'products', component: Products }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'posts', component: _Posts2.default }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'products', component: _Products2.default }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'cart', component: Cart }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'checkout', component: Checkout }),
           _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + ':slug', component: Page }),
           _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '*', component: function component() {
               return _react2.default.createElement(
@@ -24749,6 +24768,187 @@ function unregister() {
   }
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(25);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Posts = function (_Component) {
+	_inherits(Posts, _Component);
+
+	function Posts(props) {
+		_classCallCheck(this, Posts);
+
+		var _this = _possibleConstructorReturn(this, (Posts.__proto__ || Object.getPrototypeOf(Posts)).call(this, props));
+
+		_this.state = {
+			posts: []
+		};
+		return _this;
+	}
+
+	_createClass(Posts, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.getPosts();
+		}
+	}, {
+		key: 'getPosts',
+		value: function getPosts() {
+			var _this2 = this;
+
+			fetch(BicameralismSettings.URL.api + '/posts/').then(function (data) {
+				return data.json();
+			}).then(function (data) {
+				console.log(data);
+				_this2.setState({
+					posts: data
+				});
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'main',
+				null,
+				this.state.posts.map(function (post) {
+					return _react2.default.createElement(
+						'article',
+						{ key: post.id },
+						_react2.default.createElement(
+							'h3',
+							null,
+							post.title.rendered
+						),
+						_react2.default.createElement(
+							_reactRouterDom.Link,
+							{ to: BicameralismSettings.path + 'posts/' + post.slug },
+							'more'
+						)
+					);
+				})
+			);
+		}
+	}]);
+
+	return Posts;
+}(_react.Component);
+
+exports.default = Posts;
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(25);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Products = function (_Component) {
+	_inherits(Products, _Component);
+
+	function Products(props) {
+		_classCallCheck(this, Products);
+
+		var _this = _possibleConstructorReturn(this, (Products.__proto__ || Object.getPrototypeOf(Products)).call(this, props));
+
+		_this.state = {
+			products: [],
+			page: 0
+		};
+		return _this;
+	}
+
+	_createClass(Products, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.getProducts();
+		}
+	}, {
+		key: 'getProducts',
+		value: function getProducts() {
+			fetch(BicameralismSettings.woo.url + 'products?consumer_key=' + BicameralismSettings.woo.consumer_key + '&consumer_secret=' + BicameralismSettings.woo.consumer_secret).then(function (data) {
+				return data.json();
+			}).then(function (data) {
+				console.log(data);
+				// this.setState({
+				// 	products: data
+				// });
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'main',
+				null,
+				this.state.products.map(function (product) {
+					return _react2.default.createElement(
+						'article',
+						{ key: product.id },
+						_react2.default.createElement(
+							'h3',
+							null,
+							product.title.rendered
+						),
+						_react2.default.createElement(
+							_reactRouterDom.Link,
+							{ to: BicameralismSettings.path + 'products/' + product.slug },
+							'more'
+						)
+					);
+				})
+			);
+		}
+	}]);
+
+	return Products;
+}(_react.Component);
+
+exports.default = Products;
 
 /***/ })
 /******/ ]);

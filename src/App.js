@@ -2,17 +2,9 @@ import React, { Component } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.scss';
+import Posts from './Posts';
+import Products from './Products';
 
-const Posts = () => (
-  <div>
-    <h3>posts</h3>
-  </div>
-);
-const Products = () => (
-  <div>
-    <h3>products</h3>
-  </div>
-);
 const Post = () => (
   <div>
     <h3>post</h3>
@@ -21,6 +13,16 @@ const Post = () => (
 const Page = () => (
   <div>
     <h3>page</h3>
+  </div>
+);
+const Cart = () => (
+  <div>
+    <h3>cart</h3>
+  </div>
+);
+const Checkout = () => (
+  <div>
+    <h3>Checkout</h3>
   </div>
 );
 const Home = () => (
@@ -50,6 +52,9 @@ class App extends Component {
               <Link to={BicameralismSettings.path + 'products'}>shop</Link>
             </li>
             <li>
+              <Link to={BicameralismSettings.path + 'cart'}>cart</Link>
+            </li>
+            <li>
               <Link to={BicameralismSettings.path + 'sample-page'}>test</Link>
             </li>
           </ul>
@@ -59,6 +64,8 @@ class App extends Component {
           <Route exact path={BicameralismSettings.path + 'posts/:slug'} component={Post} />
           <Route exact path={BicameralismSettings.path + 'posts'} component={Posts} />
           <Route exact path={BicameralismSettings.path + 'products'} component={Products} />
+          <Route exact path={BicameralismSettings.path + 'cart'} component={Cart} />
+          <Route exact path={BicameralismSettings.path + 'checkout'} component={Checkout} />
           <Route exact path={BicameralismSettings.path + ':slug'} component={Page} />
           <Route exact path="*" component={() => <div>not found</div>} />
         </Switch>
