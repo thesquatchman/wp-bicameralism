@@ -1,39 +1,30 @@
 import React, { Component } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
+import Client from './api/Client';
 import logo from './logo.svg';
 import './App.scss';
 import Posts from './Posts';
 import Products from './Products';
-
-const Post = () => (
-  <div>
-    <h3>post</h3>
-  </div>
-);
-const Page = () => (
-  <div>
-    <h3>page</h3>
-  </div>
-);
-const Cart = () => (
-  <div>
-    <h3>cart</h3>
-  </div>
-);
-const Checkout = () => (
-  <div>
-    <h3>Checkout</h3>
-  </div>
-);
-const Home = () => (
-  <div>
-    <h3>home</h3>
-  </div>
-);
+import Post from './Post';
+import Page from './Page';
+import Cart from './Cart';
+import Checkout from './Checkout';
+import Home from './Home';
 
 class App extends Component {
-  componentDidMount() {
-    console.log(BicameralismSettings);
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: {
+        data: [],
+        page: 0
+      },
+      products: {
+        data: [],
+        page: 0
+      },
+      user: {}
+    };
   }
 
   render() {

@@ -24,9 +24,9 @@ class Products extends Component {
 			.then(data => data.json())
 			.then(data => {
 				console.log(data);
-				// this.setState({
-				// 	products: data
-				// });
+				this.setState({
+					products: data
+				});
 			});
 	}
 
@@ -36,7 +36,7 @@ class Products extends Component {
 				{this.state.products.map(product => {
 					return (
 						<article key={product.id}>
-							<h3>{product.title.rendered}</h3>
+							<h3>{product.name}</h3>
 							<Link to={BicameralismSettings.path + 'products/' + product.slug}>more</Link>
 						</article>
 					);

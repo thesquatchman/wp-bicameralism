@@ -27,7 +27,7 @@ module.exports = {
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         use: [
-          'file-loader?name=[name].[ext]&outputPath=images/&publicPath=http://localhost:7888/wordpress-wp-bicameralism/wp-content/themes/wp-bicameralism/dist/images',
+          'file-loader?name=[name].[ext]&outputPath=images/&publicPath=https://localhost:8890/wordpress-wp-bicameralism/wp-content/themes/wp-bicameralism/dist/images',
           'image-webpack-loader'
         ]
       },
