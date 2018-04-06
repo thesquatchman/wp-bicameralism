@@ -6,20 +6,20 @@ export default class Client {
 		this.wooSec = BicameralismSettings.woo.consumer_secret;
 	}
 
-	getPosts = page => this.get(this.urlBase + 'posts?page=' + page);
+	getPosts = page => this.get(this.urlBase + '/posts?page=' + page);
 
 	getProducts = page =>
 		this.get(
 			this.wooBase +
 				'products?page=' +
 				page +
-				'&products?consumer_key=' +
+				'&consumer_key=' +
 				this.wooKey +
 				'&consumer_secret=' +
 				this.wooSec
 		);
 
 	get(url) {
-		fetch(url).then(data => data.json());
+		return fetch(url).then(data => data.json());
 	}
 }

@@ -24603,11 +24603,15 @@ var _Home2 = _interopRequireDefault(_Home);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var path = BicameralismSettings.path;
 
 var App = function (_Component) {
   _inherits(App, _Component);
@@ -24617,14 +24621,40 @@ var App = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
+    _this.getMorePosts = function () {
+      if (_this.state.posts.page > 0) {
+        new _Client2.default().getPosts(_this.state.posts.page).then(function (data) {
+          if (data.length > 0) {
+            var newData = [].concat(_toConsumableArray(data), _toConsumableArray(_this.state.posts.data));
+            _this.setState({ posts: { data: data, page: _this.state.posts.page + 1 } });
+          } else {
+            _this.setState({ posts: { data: _this.state.posts.data, page: 0 } });
+          }
+        });
+      }
+    };
+
+    _this.getMoreProducts = function () {
+      if (_this.state.posts.page > 0) {
+        new _Client2.default().getProducts(_this.state.products.page).then(function (data) {
+          if (data.length > 0) {
+            var newData = [].concat(_toConsumableArray(data), _toConsumableArray(_this.state.products.data));
+            _this.setState({ products: { data: data, page: _this.state.products.page + 1 } });
+          } else {
+            _this.setState({ products: { data: _this.state.products.data, page: 0 } });
+          }
+        });
+      }
+    };
+
     _this.state = {
       posts: {
         data: [],
-        page: 0
+        page: 1
       },
       products: {
         data: [],
-        page: 0
+        page: 1
       },
       user: {}
     };
@@ -24634,6 +24664,8 @@ var App = function (_Component) {
   _createClass(App, [{
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         'div',
         { className: 'App' },
@@ -24649,7 +24681,7 @@ var App = function (_Component) {
               null,
               _react2.default.createElement(
                 _reactRouterDom.Link,
-                { to: BicameralismSettings.path },
+                { to: path },
                 'Home'
               )
             ),
@@ -24658,7 +24690,7 @@ var App = function (_Component) {
               null,
               _react2.default.createElement(
                 _reactRouterDom.Link,
-                { to: BicameralismSettings.path + 'posts' },
+                { to: path + 'posts' },
                 'Blog'
               )
             ),
@@ -24667,7 +24699,7 @@ var App = function (_Component) {
               null,
               _react2.default.createElement(
                 _reactRouterDom.Link,
-                { to: BicameralismSettings.path + 'products' },
+                { to: path + 'products' },
                 'shop'
               )
             ),
@@ -24676,7 +24708,7 @@ var App = function (_Component) {
               null,
               _react2.default.createElement(
                 _reactRouterDom.Link,
-                { to: BicameralismSettings.path + 'cart' },
+                { to: path + 'cart' },
                 'cart'
               )
             ),
@@ -24685,7 +24717,7 @@ var App = function (_Component) {
               null,
               _react2.default.createElement(
                 _reactRouterDom.Link,
-                { to: BicameralismSettings.path + 'sample-page' },
+                { to: path + 'sample-page' },
                 'test'
               )
             )
@@ -24694,14 +24726,34 @@ var App = function (_Component) {
         _react2.default.createElement(
           _reactRouterDom.Switch,
           null,
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path, component: _Home2.default }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: path, component: _Home2.default }),
           ' // the root path',
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'posts/:slug', component: _Post2.default }),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'posts', component: _Posts2.default }),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'products', component: _Products2.default }),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'cart', component: _Cart2.default }),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + 'checkout', component: _Checkout2.default }),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: BicameralismSettings.path + ':slug', component: _Page2.default }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: path + 'posts/:slug', component: _Post2.default }),
+          _react2.default.createElement(_reactRouterDom.Route, {
+            exact: true,
+            path: path + 'posts',
+            component: function component() {
+              return _react2.default.createElement(_Posts2.default, {
+                data: _this2.state.posts.data,
+                paged: _this2.state.posts.page,
+                onGetMorePosts: _this2.getMorePosts
+              });
+            }
+          }),
+          _react2.default.createElement(_reactRouterDom.Route, {
+            exact: true,
+            path: path + 'products',
+            component: function component() {
+              return _react2.default.createElement(_Products2.default, {
+                data: _this2.state.products.data,
+                paged: _this2.state.products.page,
+                onGetMoreProducts: _this2.getMoreProducts
+              });
+            }
+          }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: path + 'cart', component: _Cart2.default }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: path + 'checkout', component: _Checkout2.default }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: path + ':slug', component: _Page2.default }),
           _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '*', component: function component() {
               return _react2.default.createElement(
                 'div',
@@ -24741,11 +24793,11 @@ var Client = function () {
 		_classCallCheck(this, Client);
 
 		this.getPosts = function (page) {
-			return _this.get(_this.urlBase + 'posts?page=' + page);
+			return _this.get(_this.urlBase + '/posts?page=' + page);
 		};
 
 		this.getProducts = function (page) {
-			return _this.get(_this.wooBase + 'products?page=' + page + '&products?consumer_key=' + _this.wooKey + '&consumer_secret=' + _this.wooSec);
+			return _this.get(_this.wooBase + 'products?page=' + page + '&consumer_key=' + _this.wooKey + '&consumer_secret=' + _this.wooSec);
 		};
 
 		this.urlBase = BicameralismSettings.URL.api;
@@ -24757,7 +24809,7 @@ var Client = function () {
 	_createClass(Client, [{
 		key: 'get',
 		value: function get(url) {
-			fetch(url).then(function (data) {
+			return fetch(url).then(function (data) {
 				return data.json();
 			});
 		}
@@ -24813,40 +24865,23 @@ var Posts = function (_Component) {
 	function Posts(props) {
 		_classCallCheck(this, Posts);
 
-		var _this = _possibleConstructorReturn(this, (Posts.__proto__ || Object.getPrototypeOf(Posts)).call(this, props));
-
-		_this.state = {
-			posts: []
-		};
-		return _this;
+		return _possibleConstructorReturn(this, (Posts.__proto__ || Object.getPrototypeOf(Posts)).call(this, props));
 	}
 
 	_createClass(Posts, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			this.getPosts();
-		}
-	}, {
-		key: 'getPosts',
-		value: function getPosts() {
-			var _this2 = this;
-
-			fetch(BicameralismSettings.URL.api + '/posts/').then(function (data) {
-				return data.json();
-			}).then(function (data) {
-				console.log(data);
-				_this2.setState({
-					posts: data
-				});
-			});
+			if (this.props.paged > 0) this.props.onGetMorePosts();
 		}
 	}, {
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
 			return _react2.default.createElement(
 				'main',
 				null,
-				this.state.posts.map(function (post) {
+				this.props.data && this.props.data.map(function (post) {
 					return _react2.default.createElement(
 						'article',
 						{ key: post.id },
@@ -24861,7 +24896,17 @@ var Posts = function (_Component) {
 							'more'
 						)
 					);
-				})
+				}),
+				this.props.paged > 0 && _react2.default.createElement(
+					'button',
+					{
+						onClick: function onClick(e) {
+							e.preventDefault();
+							_this2.props.onGetMorePosts();
+						}
+					},
+					'Load More Posts'
+				)
 			);
 		}
 	}]);
@@ -24904,33 +24949,13 @@ var Products = function (_Component) {
 	function Products(props) {
 		_classCallCheck(this, Products);
 
-		var _this = _possibleConstructorReturn(this, (Products.__proto__ || Object.getPrototypeOf(Products)).call(this, props));
-
-		_this.state = {
-			products: [],
-			page: 0
-		};
-		return _this;
+		return _possibleConstructorReturn(this, (Products.__proto__ || Object.getPrototypeOf(Products)).call(this, props));
 	}
 
 	_createClass(Products, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			this.getProducts();
-		}
-	}, {
-		key: 'getProducts',
-		value: function getProducts() {
-			var _this2 = this;
-
-			fetch(BicameralismSettings.woo.url + 'products?consumer_key=' + BicameralismSettings.woo.consumer_key + '&consumer_secret=' + BicameralismSettings.woo.consumer_secret).then(function (data) {
-				return data.json();
-			}).then(function (data) {
-				console.log(data);
-				_this2.setState({
-					products: data
-				});
-			});
+			if (this.props.paged > 0) this.props.onGetMoreProducts();
 		}
 	}, {
 		key: 'render',
@@ -24938,7 +24963,7 @@ var Products = function (_Component) {
 			return _react2.default.createElement(
 				'main',
 				null,
-				this.state.products.map(function (product) {
+				this.props.data && this.props.data.map(function (product) {
 					return _react2.default.createElement(
 						'article',
 						{ key: product.id },
