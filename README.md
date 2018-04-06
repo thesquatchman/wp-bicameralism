@@ -8,12 +8,12 @@ The `functions.php` file adds extra REST endpoints, and removes the "users" endp
 
 This app is not yet finished, below is a todo list for anyone interested in contributing.
 
--expand page template component
--expand posts and post components
--expand product template
--fix cart to update qty correctly
--get a checkout functioning with C.O.D. to start
--create & import a few seperate modules on npm to process payments: Square, Paypal, Stripe
--add a user log in and recent orders
+* expand page template component
+* expand posts and post components
+* expand product template
+* fix cart to update qty correctly
+* get a checkout functioning with C.O.D. to start
+* create & import a few seperate modules on npm to process payments: Square, Paypal, Stripe
+* add a user log in and recent orders
 
 Fairly ambitious yes, but considering the number of sites using Woocommerce it opens up a lot of fun possibilities for Front-End Devs.
