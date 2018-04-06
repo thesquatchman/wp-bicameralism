@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 const Checkout = () => (
-	<div>
+	<main className="pad-h contained">
 		<h3>Checkout</h3>
-	</div>
+	</main>
 );
 
 export default Checkout;

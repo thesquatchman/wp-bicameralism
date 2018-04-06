@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 const Page = () => (
-	<div>
+	<main className="pad-h contained">
 		<h3>page</h3>
-	</div>
+	</main>
 );
 
 export default Page;

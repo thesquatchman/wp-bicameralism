@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 const Home = () => (
-	<div>
+	<main className="pad-h contained">
 		<h3>home</h3>
-	</div>
+	</main>
 );
 
 export default Home;

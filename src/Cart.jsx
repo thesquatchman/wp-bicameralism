@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 const Cart = () => (
-	<div>
+	<main className="pad-h contained">
 		<h3>cart</h3>
-	</div>
+	</main>
 );
 
 export default Cart;

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import Client from './api/Client';
-import logo from './logo.svg';
 import './App.scss';
 import Posts from './Posts';
 import Products from './Products';
@@ -10,6 +9,7 @@ import Page from './Page';
 import Cart from './Cart';
 import Checkout from './Checkout';
 import Home from './Home';
+import Header from './Header';
 
 const path = BicameralismSettings.path;
 
@@ -25,33 +25,18 @@ class App extends Component {
         data: [],
         page: 1
       },
-      user: {}
+      user: {},
+      cart: {
+        total: 0,
+        items: []
+      }
     };
   }
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <ul className="nav inline">
-            <li>
-              <Link to={path}>Home</Link>
-            </li>
-            <li>
-              <Link to={path + 'posts'}>Blog</Link>
-            </li>
-            <li>
-              <Link to={path + 'products'}>shop</Link>
-            </li>
-            <li>
-              <Link to={path + 'cart'}>cart</Link>
-            </li>
-            <li>
-              <Link to={path + 'sample-page'}>test</Link>
-            </li>
-          </ul>
-        </header>
+        <Header cart={this.state.cart} />
         <Switch>
           <Route exact path={path} component={Home} /> // the root path
           <Route exact path={path + 'posts/:slug'} component={Post} />
@@ -74,6 +59,7 @@ class App extends Component {
                 data={this.state.products.data}
                 paged={this.state.products.page}
                 onGetMoreProducts={this.getMoreProducts}
+                onAddProductToCart={this.addProductToCart}
               />
             )}
           />
@@ -91,7 +77,7 @@ class App extends Component {
       new Client().getPosts(this.state.posts.page).then(data => {
         if (data.length > 0) {
           const newData = [...data, ...this.state.posts.data];
-          this.setState({ posts: { data, page: this.state.posts.page + 1 } });
+          this.setState({ posts: { data: newData, page: this.state.posts.page + 1 } });
         } else {
           this.setState({ posts: { data: this.state.posts.data, page: 0 } });
         }
@@ -103,12 +89,34 @@ class App extends Component {
       new Client().getProducts(this.state.products.page).then(data => {
         if (data.length > 0) {
           const newData = [...data, ...this.state.products.data];
-          this.setState({ products: { data, page: this.state.products.page + 1 } });
+          this.setState({ products: { data: newData, page: this.state.products.page + 1 } });
         } else {
           this.setState({ products: { data: this.state.products.data, page: 0 } });
         }
       });
     }
+  };
+  addProductToCart = (product, qty) => {
+    const newCartItem = {
+        id: product.id,
+        name: product.name,
+        product_id: product.id,
+        quantity: qty,
+        tax_class: product.tax_class,
+        subtotal: product.price * qty,
+
+        meta_data: product.meta_data,
+        sku: product.sku,
+        price: product.price
+      },
+      newTotal = product.price * qty + this.state.cart.total;
+    this.setState({
+      cart: {
+        total: newTotal,
+        items: [newCartItem, ...this.state.cart.items]
+      }
+    });
+    console.log(product, qty);
   };
 }
 

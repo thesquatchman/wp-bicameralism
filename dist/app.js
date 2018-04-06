@@ -24567,10 +24567,6 @@ var _Client = __webpack_require__(75);
 
 var _Client2 = _interopRequireDefault(_Client);
 
-var _logo = __webpack_require__(76);
-
-var _logo2 = _interopRequireDefault(_logo);
-
 __webpack_require__(77);
 
 var _Posts = __webpack_require__(78);
@@ -24601,6 +24597,10 @@ var _Home = __webpack_require__(84);
 
 var _Home2 = _interopRequireDefault(_Home);
 
+var _Header = __webpack_require__(86);
+
+var _Header2 = _interopRequireDefault(_Header);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -24626,7 +24626,7 @@ var App = function (_Component) {
         new _Client2.default().getPosts(_this.state.posts.page).then(function (data) {
           if (data.length > 0) {
             var newData = [].concat(_toConsumableArray(data), _toConsumableArray(_this.state.posts.data));
-            _this.setState({ posts: { data: data, page: _this.state.posts.page + 1 } });
+            _this.setState({ posts: { data: newData, page: _this.state.posts.page + 1 } });
           } else {
             _this.setState({ posts: { data: _this.state.posts.data, page: 0 } });
           }
@@ -24639,12 +24639,35 @@ var App = function (_Component) {
         new _Client2.default().getProducts(_this.state.products.page).then(function (data) {
           if (data.length > 0) {
             var newData = [].concat(_toConsumableArray(data), _toConsumableArray(_this.state.products.data));
-            _this.setState({ products: { data: data, page: _this.state.products.page + 1 } });
+            _this.setState({ products: { data: newData, page: _this.state.products.page + 1 } });
           } else {
             _this.setState({ products: { data: _this.state.products.data, page: 0 } });
           }
         });
       }
+    };
+
+    _this.addProductToCart = function (product, qty) {
+      var newCartItem = {
+        id: product.id,
+        name: product.name,
+        product_id: product.id,
+        quantity: qty,
+        tax_class: product.tax_class,
+        subtotal: product.price * qty,
+
+        meta_data: product.meta_data,
+        sku: product.sku,
+        price: product.price
+      },
+          newTotal = product.price * qty + _this.state.cart.total;
+      _this.setState({
+        cart: {
+          total: newTotal,
+          items: [newCartItem].concat(_toConsumableArray(_this.state.cart.items))
+        }
+      });
+      console.log(product, qty);
     };
 
     _this.state = {
@@ -24656,7 +24679,11 @@ var App = function (_Component) {
         data: [],
         page: 1
       },
-      user: {}
+      user: {},
+      cart: {
+        total: 0,
+        items: []
+      }
     };
     return _this;
   }
@@ -24669,60 +24696,7 @@ var App = function (_Component) {
       return _react2.default.createElement(
         'div',
         { className: 'App' },
-        _react2.default.createElement(
-          'header',
-          { className: 'App-header' },
-          _react2.default.createElement('img', { src: _logo2.default, className: 'App-logo', alt: 'logo' }),
-          _react2.default.createElement(
-            'ul',
-            { className: 'nav inline' },
-            _react2.default.createElement(
-              'li',
-              null,
-              _react2.default.createElement(
-                _reactRouterDom.Link,
-                { to: path },
-                'Home'
-              )
-            ),
-            _react2.default.createElement(
-              'li',
-              null,
-              _react2.default.createElement(
-                _reactRouterDom.Link,
-                { to: path + 'posts' },
-                'Blog'
-              )
-            ),
-            _react2.default.createElement(
-              'li',
-              null,
-              _react2.default.createElement(
-                _reactRouterDom.Link,
-                { to: path + 'products' },
-                'shop'
-              )
-            ),
-            _react2.default.createElement(
-              'li',
-              null,
-              _react2.default.createElement(
-                _reactRouterDom.Link,
-                { to: path + 'cart' },
-                'cart'
-              )
-            ),
-            _react2.default.createElement(
-              'li',
-              null,
-              _react2.default.createElement(
-                _reactRouterDom.Link,
-                { to: path + 'sample-page' },
-                'test'
-              )
-            )
-          )
-        ),
+        _react2.default.createElement(_Header2.default, { cart: this.state.cart }),
         _react2.default.createElement(
           _reactRouterDom.Switch,
           null,
@@ -24747,7 +24721,8 @@ var App = function (_Component) {
               return _react2.default.createElement(_Products2.default, {
                 data: _this2.state.products.data,
                 paged: _this2.state.products.page,
-                onGetMoreProducts: _this2.getMoreProducts
+                onGetMoreProducts: _this2.getMoreProducts,
+                onAddProductToCart: _this2.addProductToCart
               });
             }
           }),
@@ -24880,7 +24855,7 @@ var Posts = function (_Component) {
 
 			return _react2.default.createElement(
 				'main',
-				null,
+				{ className: 'pad-h contained' },
 				this.props.data && this.props.data.map(function (post) {
 					return _react2.default.createElement(
 						'article',
@@ -24935,6 +24910,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(12);
 
+__webpack_require__(87);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24960,22 +24937,35 @@ var Products = function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
 			return _react2.default.createElement(
 				'main',
-				null,
+				{ className: 'pad-h pad-v contained col row-sm' },
 				this.props.data && this.props.data.map(function (product) {
 					return _react2.default.createElement(
 						'article',
-						{ key: product.id },
+						{ className: 'product size4', key: product.id },
+						_react2.default.createElement('img', { src: product.images[0].src, alt: product.images[0].alt }),
 						_react2.default.createElement(
-							'h3',
-							null,
-							product.name
-						),
-						_react2.default.createElement(
-							_reactRouterDom.Link,
-							{ to: BicameralismSettings.path + 'products/' + product.slug },
-							'more'
+							'div',
+							{ className: 'pad-h pad-v' },
+							_react2.default.createElement(
+								'h3',
+								null,
+								product.name
+							),
+							_react2.default.createElement(
+								'button',
+								{
+									className: 'btn',
+									onClick: function onClick(e) {
+										e.preventDefault();
+										_this2.props.onAddProductToCart(product, 1);
+									}
+								},
+								'Add to cart'
+							)
 						)
 					);
 				})
@@ -25007,12 +24997,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Post = function Post() {
 	return _react2.default.createElement(
-		'div',
-		null,
+		"main",
+		{ className: "pad-h contained" },
 		_react2.default.createElement(
-			'h3',
+			"h3",
 			null,
-			'post'
+			"post"
 		)
 	);
 };
@@ -25038,12 +25028,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Page = function Page() {
 	return _react2.default.createElement(
-		'div',
-		null,
+		"main",
+		{ className: "pad-h contained" },
 		_react2.default.createElement(
-			'h3',
+			"h3",
 			null,
-			'page'
+			"page"
 		)
 	);
 };
@@ -25069,12 +25059,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Cart = function Cart() {
 	return _react2.default.createElement(
-		'div',
-		null,
+		"main",
+		{ className: "pad-h contained" },
 		_react2.default.createElement(
-			'h3',
+			"h3",
 			null,
-			'cart'
+			"cart"
 		)
 	);
 };
@@ -25100,12 +25090,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Checkout = function Checkout() {
 	return _react2.default.createElement(
-		'div',
-		null,
+		"main",
+		{ className: "pad-h contained" },
 		_react2.default.createElement(
-			'h3',
+			"h3",
 			null,
-			'Checkout'
+			"Checkout"
 		)
 	);
 };
@@ -25131,12 +25121,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Home = function Home() {
 	return _react2.default.createElement(
-		'div',
-		null,
+		"main",
+		{ className: "pad-h contained" },
 		_react2.default.createElement(
-			'h3',
+			"h3",
 			null,
-			'home'
+			"home"
 		)
 	);
 };
@@ -25256,6 +25246,152 @@ function unregister() {
   }
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(12);
+
+var _logo = __webpack_require__(76);
+
+var _logo2 = _interopRequireDefault(_logo);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var path = BicameralismSettings.path;
+
+var Header = function (_Component) {
+	_inherits(Header, _Component);
+
+	function Header() {
+		_classCallCheck(this, Header);
+
+		return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+	}
+
+	_createClass(Header, [{
+		key: 'render',
+		value: function render() {
+			var _props$cart = this.props.cart,
+			    items = _props$cart.items,
+			    total = _props$cart.total;
+
+			return _react2.default.createElement(
+				'header',
+				{ className: 'header-container' },
+				_react2.default.createElement(
+					'nav',
+					{ className: 'navbar contained' },
+					_react2.default.createElement(
+						_reactRouterDom.Link,
+						{ to: path, className: 'brand' },
+						_react2.default.createElement('img', { src: _logo2.default, className: 'App-logo', alt: 'logo' }),
+						'WP Bicameralism'
+					),
+					_react2.default.createElement(
+						'ul',
+						{ className: 'nav inline' },
+						_react2.default.createElement(
+							'li',
+							null,
+							_react2.default.createElement(
+								_reactRouterDom.Link,
+								{ to: path },
+								'Home'
+							)
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							_react2.default.createElement(
+								_reactRouterDom.Link,
+								{ to: path + 'posts' },
+								'Blog'
+							)
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							_react2.default.createElement(
+								_reactRouterDom.Link,
+								{ to: path + 'products' },
+								'shop'
+							)
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							_react2.default.createElement(
+								_reactRouterDom.Link,
+								{ to: path + 'cart' },
+								'cart'
+							)
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							_react2.default.createElement(
+								_reactRouterDom.Link,
+								{ to: path + 'sample-page' },
+								'test'
+							)
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'minicart' },
+						items.length > 0 ? _react2.default.createElement(
+							'span',
+							null,
+							items.length,
+							' item(s)'
+						) : _react2.default.createElement(
+							'span',
+							null,
+							'cart emtpy'
+						),
+						_react2.default.createElement(
+							'span',
+							null,
+							' $',
+							total
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return Header;
+}(_react.Component);
+
+exports.default = Header;
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

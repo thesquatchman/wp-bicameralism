@@ -11,7 +11,7 @@ class Posts extends Component {
 
 	render() {
 		return (
-			<main>
+			<main className="pad-h contained">
 				{this.props.data &&
 					this.props.data.map(post => {
 						return (
